@@ -1,0 +1,94 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <a class="navbar-brand" href="#">Xpenz-Tracker</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarColor01">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="#">Update income</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/user/logout">Logout</a>
+      </li>
+    </ul>
+</nav>
+<h4 class="text-center">Hi, <%=user.name%></h4>
+<div class="row mt-3">
+   <div class="col-md-6 m-auto">
+      <div class="card card-body">
+           <h3>Income: <%=user.income%></h3>
+      </div>
+      <!-- div for expense details and amount -->
+      <div class="card card-body mt-4">
+        <%- include('./partials/messages'); %>
+        <form action="/user/expenses" method="POST">
+         <div class="form-group">
+            <label for="expenseDetails">Expense Details:</label>
+            <input type="text" name="expenseDetails" id="expenseDetails" required class="form-control" placeholder="expense details">
+         </div>
+         <div class="form-group">
+          <label for="expenseAmount">Expense Amount:</label>
+          <input type="number" name="expenseAmount" id="expenseAmount" required class="form-control" placeholder="expense Amount">
+       </div>
+
+        <button type="submit" class="btn btn-primary btn-lg   btn-block">Submit</button>
+       </form>
+     </div>
+     <!-- Available balance container -->
+     <div class="card card-body mt-4">
+        <h3>Available Balance: </h3>
+     </div>
+
+     <!-- view Expenses btn -->
+     <div class="card card-body mt-4">
+      <button type="button"  class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+        View expense history
+      </button>
+     </div>
+    </div>
+   </div>
+
+
+
+   <!-- The Modal -->
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Expenses history</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col">Details</th>
+              <th scope="col">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr class="table-active">
+                <th scope="row"></th>
+                <td></td>
+                <td></td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" id="clearHistoryBtn">Clear history</button>
+      </div>
+
+    </div>
+  </div>
+</div>
