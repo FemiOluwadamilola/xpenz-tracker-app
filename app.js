@@ -7,9 +7,9 @@ const session = require('express-session');
 const Router = require('./routes/index.js');
 const userRouter = require('./routes/user.js');
 const expenseRouter = require('./routes/expense.js');
-const db = require('./config/keys.js');
 const passport = require('passport');
 
+require('dotenv').config();
 
 // passport config
 require('./config/passport')(passport);
@@ -17,7 +17,7 @@ require('./config/passport')(passport);
 const app = express();
 
 // DB config/connect to mongo
-const dbConfig = db.mongoURI;
+const dbConfig = process.env.MONGO_URL
 // mongoose.set(' useUnifiedTopology', true)
 
 mongoose.connect(dbConfig, { useUnifiedTopology:true, useNewUrlParser: true,useFindAndModify:false })

@@ -74,29 +74,34 @@ const createUser = (req,res) => {
 }
 
 const createExpenses =  (req,res) => {
-//  const newExpenses = new User();
-//  const exps = req.body;
-//  if(newExpenses._id === req.body.id){
-//    newExpenses.expenses.push(exps);
-//   req.flash('success_msg','Expense Added!!!');
-//   res.redirect('/interface');
-//  }else{
-//    return;
-//  }
-
-  const user = new User();
+  const userProfileId = req.user._id; 
   const { expenseDetails, expenseAmount} = req.body;
-  user.findById({_id:exps._id}).expenses.push({
-    expenseDetails:expenseDetails,
-    expenseAmount:expenseAmount
-  })
-
-  re
+  const expenseInfo = {
+     expenseDetails,
+     expenseAmount
+  };
+  User.findOneAndUpdate(
+    {_id:userProfileId},
+    {$push:{expenses:expenseInfo}},
+     function(error,success){
+       if(error){
+         console.log(error)
+       }else{
+         console.log(success)
+         res.redirect('/interface')
+       }
+     }
+    )
 }
 
 
-const forgetPasswordHandler = (req,res) => {
-  const {new_password, confirm_new_password} = req.body;
+const forgetPassword = (req,res) => {
+  const {email, new_password, confirm_new_password} = req.body;
+  const errors = [];
+
+ if(new_password !== confirm_new_password){
+    errors.push({msg:'Passwords do not match'});
+ }
 
  User.findOne({email:email})
  .then(user => {
@@ -105,7 +110,7 @@ const forgetPasswordHandler = (req,res) => {
     res.redirect('/user/register');
    }else{
     const userNewPassword = new User({
-      password
+      password:new_password
     });
      // hash password
      bcrypt.genSalt(10, (err, salt) => bcrypt.hash(userNewPassword.password, salt, (err, hash) => {
@@ -113,16 +118,14 @@ const forgetPasswordHandler = (req,res) => {
 
       // set new password to hashed
       userNewPassword.password = hash;
-        userNewPassword.update({email:email},{
+
+        userNewPassword.updateOne({email:email},{
           $set:{
             password:new_password
           }
        })
-       .then(user => {
-         req.flash('success_msg','password updated successfully ');
-          res.redirect('/user/login');
-       })
-       .catch(err => console.log(err))
+        req.flash('success_msg','password updated successfully ');
+        res.redirect('/user/login');
     }))
    }
  })
@@ -130,4 +133,4 @@ const forgetPasswordHandler = (req,res) => {
 
 
 
-module.exports = {createUser, createExpenses,forgetPasswordHandler}
+module.exports = {createUser, createExpenses,forgetPassword}

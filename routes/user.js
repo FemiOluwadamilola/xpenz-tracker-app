@@ -1,7 +1,7 @@
 const express = require('express');
 const passport = require('passport');
 const router = express.Router();
-const {createUser,createExpenses, forgetPasswordHandler} = require('../controllers/user.js');
+const {createUser,createExpenses, forgetPassword} = require('../controllers/user.js');
 const User = require('../models/User.js');
 // Login page
 router.get('/login', (req,res) => res.render('login'))
@@ -28,7 +28,7 @@ router.post('/login', (req,res,next) => {
 })
 
 // update password Handler
-router.put('/forgetPassword', forgetPasswordHandler)
+router.post('/forgetPassword', forgetPassword)
 
 // Logout Handle
 router.get('/logout',(req,res) => {
